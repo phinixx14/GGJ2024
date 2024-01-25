@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class PlayerCollider : MonoBehaviour
 {
+    PlayerManager player;
     BoxCollider2D col;
+    SpriteRenderer sprite;
     LevelScroller scroller;
     // Start is called before the first frame update
     void Start()
     {
-        col = GetComponent<BoxCollider2D>();
+        player = GetComponentInParent<PlayerManager>();
+        col = transform.parent.GetComponentInChildren<BoxCollider2D>();
+        sprite = transform.parent.GetComponentInChildren<SpriteRenderer>();
+        
         if (!scroller) {
             scroller = FindObjectOfType<LevelScroller>();
         }
@@ -21,21 +26,15 @@ public class PlayerCollider : MonoBehaviour
         List<Collider2D> collisions = new();
         col.OverlapCollider(new ContactFilter2D().NoFilter(), collisions);
         if (collisions.Count > 0) {
+            Debug.Log("collider overlap");
             scroller.Stop();
-            collisions[0].gameObject.GetComponent<SpriteRenderer>().color = Color.red;
-            this.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+            sprite.color = Color.red;
+            collisions.ForEach(c => c.gameObject.GetComponent<SpriteRenderer>().color = Color.red);
+            player.OnPlayerDeath();
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collider) {
         Debug.Log("trigger enter");
-        
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision) {
-        Debug.Log("collision enter");
-        GameObject.Find("Stage Scroller").GetComponent<LevelScroller>().Stop();
-        collision.collider.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
-        this.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
     }
 }
