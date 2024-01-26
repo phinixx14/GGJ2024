@@ -28,8 +28,8 @@ public class PlayerCollider : MonoBehaviour
         if (collisions.Count > 0) {
             Debug.Log("collider overlap");
             scroller.Stop();
-            sprite.color = Color.red;
-            collisions.ForEach(c => c.gameObject.GetComponent<SpriteRenderer>().color = Color.red);
+            sprite.color = new Color(.5f, .2f, .2f);
+            collisions.ForEach(c => c.gameObject.transform.parent.GetComponentInChildren<SpriteRenderer>().color = new Color(.5f, .2f, .2f));
             player.OnPlayerDeath();
         }
     }
