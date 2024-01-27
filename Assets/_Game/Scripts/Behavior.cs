@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class AbstractBehavior
+public abstract class Behavior:MonoBehaviour
 {
-    public float duration;
+    public float Duration { get; set; }
     public abstract void Act();
 }

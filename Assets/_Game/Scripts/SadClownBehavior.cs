@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class SadClownBehavior : MonoBehaviour
 {
-    AbstractBehavior behavior;
+    public Behavior[] behaviors;
+
     // Start is called before the first frame update
     void Start() {
 
     }
     // Update is called once per frame
     void Update() {
-        behavior = ChooseAction();
+        Behavior currentBehavior = transform.parent.gameObject.GetComponentInChildren<Behavior>();
+        if (currentBehavior == null) {
+            AttachRandomBehavior();
+        }
     }
-    AbstractBehavior ChooseAction() {
-        return new Meander();
+    void AttachRandomBehavior() {
+        int index = Mathf.FloorToInt(Random.value * behaviors.Length);
+        Behavior b = behaviors[index];
+        Behavior instantiated = GameObject.Instantiate<Behavior>(b, transform.parent);
     }
 
 }

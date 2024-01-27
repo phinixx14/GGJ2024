@@ -19,8 +19,10 @@ public class PlayerController : MonoBehaviour
     }
 
     void Update() {
-//        Vector2 inputVector = controls.RoadControls.Movement.ReadValue<Vector2>() * speed * Time.deltaTime;
+        //        Vector2 inputVector = controls.RoadControls.Movement.ReadValue<Vector2>() * speed * Time.deltaTime;
+        Debug.Log((Vector2)player.position);
         player.Translate(movement * Time.deltaTime);
+        player.position = new Vector3(Mathf.Clamp(player.position.x, -11, 11), Mathf.Clamp(player.position.y, -4, 4), 0);
     }
 
     public void OnPlayerDeath() {
@@ -29,7 +31,6 @@ public class PlayerController : MonoBehaviour
     }
 
     private void HandleMovement(InputAction.CallbackContext ctx) {
-        Debug.Log("on lat");
         Vector2 input = ctx.ReadValue<Vector2>();
         movement = new Vector3(input.x * speed, input.y * speed, 0);
     }
