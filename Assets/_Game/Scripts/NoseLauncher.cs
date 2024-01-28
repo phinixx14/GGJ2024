@@ -6,11 +6,16 @@ public class NoseLauncher : MonoBehaviour
 {
     public Projectile nosePrefab;
     public Transform stage;
+    public GameManager gm;
+
     private void Start() {
-        stage = GameManager.FindInstance().CurrentStage?.transform;
+        gm = GameManager.FindInstance();
+        stage = gm.CurrentStage?.transform;
     }
     public enum LaunchDirection { Left,Right};
     public void LaunchNose(LaunchDirection dir) {
+        gm.SoundManager.PlaySFX(gm.SoundManager.LaunchNoseSFX);
+
         float angle = 0f;
         switch (dir) {
             case LaunchDirection.Left:

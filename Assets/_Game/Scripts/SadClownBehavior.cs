@@ -6,10 +6,10 @@ public class SadClownBehavior : MonoBehaviour
 {
     public Behavior[] behaviors;
     public GameObject HappyClown;
-
+    public GameManager gm;
     // Start is called before the first frame update
     void Start() {
-
+        gm = GameManager.FindInstance();
     }
     // Update is called once per frame
     void Update() {
@@ -25,6 +25,7 @@ public class SadClownBehavior : MonoBehaviour
     }
 
     public void AttachNose() {
+        gm.SoundManager.PlaySFX(gm.SoundManager.NoseHitSFX);
         Instantiate(HappyClown, transform.parent.position, transform.parent.rotation, transform.parent.parent);
         Destroy(transform.parent.gameObject);
     }

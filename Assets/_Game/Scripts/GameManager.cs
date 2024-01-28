@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public PlayerManager PlayerPrefab;
     public LevelScroller LevelScrollerPrefab;
     public GameObject[] Stages;
+    public SoundManager SoundManager;
 
     PlayerManager player;
     LevelScroller levelScroller;
@@ -90,6 +91,8 @@ public class GameManager : MonoBehaviour
 
         levelScroller = Instantiate(LevelScrollerPrefab, this.transform.parent);
         levelScroller.Stop();
+
+        SoundManager.PlayMusic(SoundManager.TitleMusic);
     }
     private void Start() {
         //StartGame();
@@ -97,7 +100,9 @@ public class GameManager : MonoBehaviour
 
     void PlayerDeath() {
         //if (--Lives <= 0) {
-            GameOverUI.gameObject.SetActive(true);
+        SoundManager.PlaySFX(SoundManager.CollisionSFX);
+        SoundManager.PlayMusic(SoundManager.GameOverMusic);
+        GameOverUI.gameObject.SetActive(true);
         //}
     }
 
@@ -125,6 +130,8 @@ public class GameManager : MonoBehaviour
         CurrentStageIndex = 0;
         CurrentStage = Stages[CurrentStageIndex];
         BuildStage(0);
+
+        SoundManager.PlayMusic(SoundManager.Stage1Music,false);
     }
     GameObject BuildStage(int stageIndex) {
         levelScroller.Stop();
