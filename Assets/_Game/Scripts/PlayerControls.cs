@@ -53,6 +53,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""1133f610-cb92-450e-aa91-27e411ee472f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -231,6 +240,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""77642189-5638-4ee0-ace2-7abb572b0076"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -242,6 +262,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_RoadControls_Movement = m_RoadControls.FindAction("Movement", throwIfNotFound: true);
         m_RoadControls_Action = m_RoadControls.FindAction("Action", throwIfNotFound: true);
         m_RoadControls_Move = m_RoadControls.FindAction("Move", throwIfNotFound: true);
+        m_RoadControls_Pause = m_RoadControls.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -306,6 +327,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_RoadControls_Movement;
     private readonly InputAction m_RoadControls_Action;
     private readonly InputAction m_RoadControls_Move;
+    private readonly InputAction m_RoadControls_Pause;
     public struct RoadControlsActions
     {
         private @PlayerControls m_Wrapper;
@@ -313,6 +335,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_RoadControls_Movement;
         public InputAction @Action => m_Wrapper.m_RoadControls_Action;
         public InputAction @Move => m_Wrapper.m_RoadControls_Move;
+        public InputAction @Pause => m_Wrapper.m_RoadControls_Pause;
         public InputActionMap Get() { return m_Wrapper.m_RoadControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -331,6 +354,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IRoadControlsActions instance)
@@ -344,6 +370,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IRoadControlsActions instance)
@@ -366,5 +395,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnAction(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

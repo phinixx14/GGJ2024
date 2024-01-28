@@ -13,7 +13,10 @@ public class LevelScroller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        GameManager gm = GameManager.FindInstance();
+        gm.OnPlayerDeath += Stop;
+        gm.OnPause += Stop;
+        gm.OnUnpause += Resume;
     }
 
     // Update is called once per frame
@@ -24,8 +27,13 @@ public class LevelScroller : MonoBehaviour
             stage.Translate(dir * ScrollSpeed, Space.Self);
         }
     }
-
     public void Stop() {
         this.running = false;
+    }
+    public void Stop(object sender) {
+        this.running = false;
+    }
+    public void Resume() {
+        this.running = true;
     }
 }

@@ -8,13 +8,13 @@ public class PlayerCollider : MonoBehaviour
     BoxCollider2D col;
     SpriteRenderer sprite;
     LevelScroller scroller;
+
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         player = GetComponentInParent<PlayerManager>();
         col = transform.parent.GetComponentInChildren<BoxCollider2D>();
         sprite = transform.parent.GetComponentInChildren<SpriteRenderer>();
-        
+
         if (!scroller) {
             scroller = FindObjectOfType<LevelScroller>();
         }
@@ -39,8 +39,7 @@ public class PlayerCollider : MonoBehaviour
 
             if (hits > 0) {
                 sprite.color = new Color(.5f, .2f, .2f);
-                scroller.Stop();
-                player.OnPlayerDeath();
+                GameManager.FindInstance().TriggerDeath();
             }
         }
     }

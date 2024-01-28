@@ -8,6 +8,7 @@ TagManager:
   - SadClown
   - Friendly Projectile
   - StageRunner
+  - GameManager
   layers:
   - Default
   - TransparentFX
