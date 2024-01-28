@@ -368,3 +368,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba0ecb68b9d725e4b805e20e65fc3509, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  launcher: {fileID: 3567882529361138625}

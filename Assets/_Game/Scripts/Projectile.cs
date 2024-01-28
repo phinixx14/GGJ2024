@@ -8,15 +8,19 @@ public class Projectile : MonoBehaviour
     public SpriteRenderer sprite;
     public float speed = 1;
     public Collider2D col;
+    GameManager gm;
 
     // Start is called before the first frame update
     void Start()
     {
         this.sprite = GetComponentInChildren<SpriteRenderer>();
         this.col = GetComponentInChildren<Collider2D>();
-        GameManager.FindInstance().OnPlayerDeath += DestroySelf;
+        gm = GameManager.FindInstance();
+        gm.OnPlayerDeath += DestroySelf;
     }
-
+    private void OnDestroy() {
+        gm.OnPlayerDeath -= DestroySelf;
+    }
     // Update is called once per frame
     void Update() {
         sprite.transform.Rotate(Vector3.forward, 360f * Time.deltaTime);
@@ -43,12 +47,14 @@ public class Projectile : MonoBehaviour
             });
 
             if (hits > 0) {
-                Destroy(this.gameObject);
+                DestroySelf(this);
             }
         }
     }
 
     void DestroySelf(object sender) {
-        Destroy(gameObject);
+        if (this && this.gameObject != null) {
+            Destroy(this.gameObject);
+        }
     }
 }

@@ -27,7 +27,11 @@ public class PlayerController : MonoBehaviour
         player.Translate(movement * Time.deltaTime);
         player.position = new Vector3(Mathf.Clamp(player.position.x, -11, 11), Mathf.Clamp(player.position.y, -4, 4), 0);
     }
-
+    private void OnDestroy() {
+        controls.RoadControls.Move.performed -= this.HandleMovement;
+        controls.RoadControls.Action.performed -= this.OnActionButtonPressed;
+        controls.RoadControls.Pause.performed -= this.OnPausePressed;
+    }
     public void OnPlayerDeath() {
         controls.RoadControls.Disable();
         movement = Vector3.zero;
