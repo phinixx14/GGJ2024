@@ -15,11 +15,13 @@ public class LevelScroller : MonoBehaviour
     {
         gm = GameManager.FindInstance();
         gm.OnPlayerDeath += Stop;
+        gm.OnReachedFinish += Stop;
         gm.OnPause += Stop;
         gm.OnUnpause += Resume;
     }
     private void OnDestroy() {
         gm.OnPlayerDeath -= Stop;
+        gm.OnReachedFinish -= Stop;
         gm.OnPause -= Stop;
         gm.OnUnpause -= Resume;
     }

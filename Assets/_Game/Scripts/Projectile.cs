@@ -17,9 +17,11 @@ public class Projectile : MonoBehaviour
         this.col = GetComponentInChildren<Collider2D>();
         gm = GameManager.FindInstance();
         gm.OnPlayerDeath += DestroySelf;
+        gm.OnReachedFinish += DestroySelf;
     }
     private void OnDestroy() {
         gm.OnPlayerDeath -= DestroySelf;
+        gm.OnReachedFinish -= DestroySelf;
     }
     // Update is called once per frame
     void Update() {
@@ -51,7 +53,11 @@ public class Projectile : MonoBehaviour
             }
         }
     }
-
+    void DestroySelf() {
+        if (this && this.gameObject != null) {
+            Destroy(this.gameObject);
+        }
+    }
     void DestroySelf(object sender) {
         if (this && this.gameObject != null) {
             Destroy(this.gameObject);

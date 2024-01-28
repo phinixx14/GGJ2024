@@ -16,16 +16,23 @@ public class PlayerManager : MonoBehaviour
     {
         gm = GameManager.FindInstance();
         gm.OnPlayerDeath += OnPlayerDeath;
-
+        gm.OnReachedFinish += OnReachFinish;
         col = GetComponentInChildren<PlayerCollider>();
         controller = GetComponentInChildren<PlayerController>();
         sprite = GetComponentInChildren<SpriteRenderer>();
     }
     private void OnDestroy() {
         gm.OnPlayerDeath -= OnPlayerDeath;
+        gm.OnReachedFinish -= OnReachFinish;
     }
     public void OnPlayerDeath(object sender) {
-        Debug.Log("player death");
+        if (col) {
+            col.gameObject.SetActive(false);
+        }
+        controller.OnPlayerDeath();
+    }
+
+    public void OnReachFinish() {
         if (col) {
             col.gameObject.SetActive(false);
         }

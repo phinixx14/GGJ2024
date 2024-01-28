@@ -8,12 +8,14 @@ public class PlayerCollider : MonoBehaviour
     BoxCollider2D col;
     SpriteRenderer sprite;
     LevelScroller scroller;
+    GameManager gm;
 
     // Start is called before the first frame update
     void Start() {
         player = GetComponentInParent<PlayerManager>();
         col = transform.parent.GetComponentInChildren<BoxCollider2D>();
         sprite = transform.parent.GetComponentInChildren<SpriteRenderer>();
+        gm = GameManager.FindInstance();
 
         if (!scroller) {
             scroller = FindObjectOfType<LevelScroller>();
@@ -32,20 +34,21 @@ public class PlayerCollider : MonoBehaviour
             int hits = 0;
             collisions.ForEach(col => {
                 if (!col.CompareTag("FriendlyProjectile")) {
-                    hits++;
-                    Debug.Log("collider overlap");
-                    col.gameObject.transform.parent.GetComponentInChildren<SpriteRenderer>().color = new Color(.5f, .2f, .2f);
+                    if (col.CompareTag("Finish")) {
+                        gm.TriggerReachedFinish();
+                    }
+                    else {
+                        hits++;
+                        Debug.Log("collider overlap");
+                        col.gameObject.transform.parent.GetComponentInChildren<SpriteRenderer>().color = new Color(.5f, .2f, .2f);
+                    }
                 }
             });
 
             if (hits > 0) {
                 sprite.color = new Color(.5f, .2f, .2f);
-                GameManager.FindInstance().TriggerDeath();
+                gm.TriggerDeath();
             }
         }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collider) {
-        Debug.Log("trigger enter");
     }
 }
