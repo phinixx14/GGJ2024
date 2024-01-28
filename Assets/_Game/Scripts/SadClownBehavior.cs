@@ -5,6 +5,7 @@ using UnityEngine;
 public class SadClownBehavior : MonoBehaviour
 {
     public Behavior[] behaviors;
+    public GameObject HappyClown;
 
     // Start is called before the first frame update
     void Start() {
@@ -23,4 +24,8 @@ public class SadClownBehavior : MonoBehaviour
         Behavior instantiated = GameObject.Instantiate<Behavior>(b, transform.parent);
     }
 
+    public void AttachNose() {
+        Instantiate(HappyClown, transform.parent.position, transform.parent.rotation, transform.parent.parent);
+        Destroy(transform.parent.gameObject);
+    }
 }
