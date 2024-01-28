@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     PlayerControls controls;
     public float speed = 200f;
     Vector2 movement;
+    NoseLauncher launcher;
 
     void Start() {
         player = transform.parent;
@@ -16,11 +17,13 @@ public class PlayerController : MonoBehaviour
         controls.RoadControls.Enable();
         controls.RoadControls.Move.performed += this.HandleMovement;
         controls.RoadControls.Action.performed += this.OnActionButtonPressed;
+        launcher = transform.parent.GetComponentInChildren<NoseLauncher>();
     }
 
     void Update() {
-//        Vector2 inputVector = controls.RoadControls.Movement.ReadValue<Vector2>() * speed * Time.deltaTime;
+        //        Vector2 inputVector = controls.RoadControls.Movement.ReadValue<Vector2>() * speed * Time.deltaTime;
         player.Translate(movement * Time.deltaTime);
+        player.position = new Vector3(Mathf.Clamp(player.position.x, -11, 11), Mathf.Clamp(player.position.y, -4, 4), 0);
     }
 
     public void OnPlayerDeath() {
@@ -29,12 +32,12 @@ public class PlayerController : MonoBehaviour
     }
 
     private void HandleMovement(InputAction.CallbackContext ctx) {
-        Debug.Log("on lat");
         Vector2 input = ctx.ReadValue<Vector2>();
         movement = new Vector3(input.x * speed, input.y * speed, 0);
     }
 
     private void OnActionButtonPressed(InputAction.CallbackContext obj) {
         Debug.Log("on act");
+        launcher.LaunchNose(NoseLauncher.LaunchDirection.Left);
     }
 }

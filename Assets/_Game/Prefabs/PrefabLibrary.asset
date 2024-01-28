@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0029a33c0b9c11448a86a0d339ceeeb9, type: 3}
+  m_Name: PrefabLibrary
+  m_EditorClassIdentifier: 
+  SadClown: {fileID: 8226560652694457918, guid: 57a3bf3e9be551441a6bd18094c1c4de, type: 3}
+  HappyClown: {fileID: 8749997529730991100, guid: 19704620a6179534180a928e478386e0, type: 3}
+  Tent1: {fileID: 7075150383925155724, guid: 2d7415f1ac7ec2a47a762da1ddec9394, type: 3}
+  Tent2: {fileID: 3697962230143266702, guid: a7f25d69e230b9a48bde2402b8b0069b, type: 3}
+  NoseProjectile: {fileID: 4890059214654638058, guid: d9a60f02fad2c794eb7e338b01792f68, type: 3}

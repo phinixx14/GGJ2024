@@ -6,6 +6,8 @@ public class LevelScroller : MonoBehaviour
 {
     public Transform stage;
     public float ScrollSpeed;
+    public PrefabLibrary prefabs;
+
     bool running = true;
 
     // Start is called before the first frame update
