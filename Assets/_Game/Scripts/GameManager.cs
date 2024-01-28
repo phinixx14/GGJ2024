@@ -9,11 +9,18 @@ public class GameManager : MonoBehaviour
     public static GameManager FindInstance() {
         return GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
     }
+    public PlayerManager PlayerPrefab;
+    public LevelScroller LevelScrollerPrefab;
+    public GameObject[] Stages;
 
-    public Canvas PauseUI;
-    public Canvas GameOverUI;
-    public Canvas YouWinUI;
+    PlayerManager player;
+    LevelScroller levelScroller;
+    Canvas PauseUI;
+    Canvas GameOverUI;
+    Canvas YouWinUI;
+    Canvas InstructionsUI;
 
+    Button btnStart_Instructions;
     Button btnUnpause_Pause;
     Button btnExit_Pause;
     Button btnExit_GameOver;
@@ -22,8 +29,10 @@ public class GameManager : MonoBehaviour
     public bool IsPaused { get; private set; }
     public int Lives { get; set; }
     public int Score { get; set; }
+    public int CurrentStageIndex { get; set; }
+    public GameObject CurrentStage { get; set; }
 
-    private void Start() {
+    private void Awake() {
         IsPaused = false;
         Lives = 3;
         Score = 0;
@@ -32,6 +41,7 @@ public class GameManager : MonoBehaviour
         PauseUI = canvases.Find(c => c.name == "Pause Screen Canvas").GetComponent<Canvas>();
         GameOverUI = canvases.Find(c => c.name == "Game Over Canvas").GetComponent<Canvas>();
         YouWinUI = canvases.Find(c => c.name == "You Win Canvas").GetComponent<Canvas>();
+        InstructionsUI = canvases.Find(c => c.name == "Instructions Canvas").GetComponent<Canvas>();
 
         List<Button> pauseUIButtons = new List<Button>(PauseUI.gameObject.GetComponentsInChildren<Button>());
         btnUnpause_Pause = pauseUIButtons.Find(btn => btn.name == "Unpause Button").GetComponent<Button>();
@@ -41,21 +51,32 @@ public class GameManager : MonoBehaviour
         btnRestart_GameOver = gameOverUIButtons.Find(btn => btn.name == "Restart Button").GetComponent<Button>();
         btnExit_GameOver = gameOverUIButtons.Find(btn => btn.name == "Exit Button").GetComponent<Button>();
 
+        List<Button> InstructionsUIButtons = new List<Button>(InstructionsUI.gameObject.GetComponentsInChildren<Button>());
+        btnStart_Instructions = InstructionsUIButtons.Find(btn => btn.name == "Start Button").GetComponent<Button>();
+
+        InstructionsUI.gameObject.SetActive(false);
+        btnStart_Instructions.onClick.AddListener(StartGame);
+
         PauseUI.gameObject.SetActive(false);
         btnUnpause_Pause.onClick.AddListener(Pause);
         btnExit_Pause.onClick.AddListener(ExitGame);
 
         GameOverUI.gameObject.SetActive(false);
         btnRestart_GameOver.onClick.AddListener(ResetGame);
-        btnExit_GameOver.onClick.AddListener(Application.Quit);
+        btnExit_GameOver.onClick.AddListener(ExitGame);
 
         YouWinUI.gameObject.SetActive(false);
+
+        levelScroller = Instantiate(LevelScrollerPrefab, this.transform.parent);
+    }
+    private void Start() {
+        StartGame();
     }
 
     void PlayerDeath() {
-        if (--Lives <= 0) {
+        //if (--Lives <= 0) {
             GameOverUI.gameObject.SetActive(true);
-        }
+        //}
     }
 
     public delegate void OnPlayerDeathArgs(object sender);
@@ -65,6 +86,26 @@ public class GameManager : MonoBehaviour
     public event OnPauseArgs OnPause;
     public event OnPauseArgs OnUnpause;
 
+    void StartGame() {
+        player = Instantiate(PlayerPrefab);
+        CurrentStageIndex = 0;
+        CurrentStage = Stages[CurrentStageIndex];
+        BuildStage(0);
+    }
+    GameObject BuildStage(int stageIndex) {
+        levelScroller.Stop();
+
+        if (levelScroller.stage) {
+            Destroy(levelScroller.stage.gameObject);
+        }
+        
+        GameObject stage = Instantiate(Stages[CurrentStageIndex]);
+        levelScroller.stage = stage.transform;
+        CurrentStage = stage;
+        player.launcher.stage = stage.transform;
+        levelScroller.Resume();
+        return stage;
+    }
     public void TriggerDeath() {
         OnPlayerDeath.Invoke(this);
         PlayerDeath();
@@ -72,8 +113,13 @@ public class GameManager : MonoBehaviour
 
     void ResetGame() {
         Debug.Log("RESET GAME");
+        Destroy(player.gameObject);
+        GameOverUI.gameObject.SetActive(false);
+        
         Score = 0;
         Lives = 3;
+
+        StartGame();
     }
     void ExitGame() {
         #if UNITY_EDITOR

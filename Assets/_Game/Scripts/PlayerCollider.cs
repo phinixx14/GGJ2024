@@ -23,6 +23,7 @@ public class PlayerCollider : MonoBehaviour
     // Update is called once per frame
     void Update() {
         ContactFilter2D filter = new ContactFilter2D();
+        filter.useTriggers = true;
         //filter.SetLayerMask(LayerMask.NameToLayer("Nose Targets"));
         List<Collider2D> collisions = new();
         col.OverlapCollider(filter, collisions);

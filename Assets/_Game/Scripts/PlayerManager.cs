@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
+    public NoseLauncher launcher;
+
     PlayerCollider col;
     PlayerController controller;
     SpriteRenderer sprite;
@@ -19,10 +21,14 @@ public class PlayerManager : MonoBehaviour
         controller = GetComponentInChildren<PlayerController>();
         sprite = GetComponentInChildren<SpriteRenderer>();
     }
-
+    private void OnDestroy() {
+        gm.OnPlayerDeath -= OnPlayerDeath;
+    }
     public void OnPlayerDeath(object sender) {
         Debug.Log("player death");
-        col.gameObject.SetActive(false);
+        if (col) {
+            col.gameObject.SetActive(false);
+        }
         controller.OnPlayerDeath();
     }
 }
