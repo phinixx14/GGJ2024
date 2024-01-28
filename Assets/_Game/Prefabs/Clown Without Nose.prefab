@@ -205,6 +205,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5424bef1391d1344f83273762c55113f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  behaviors:
+  - {fileID: 2047061114085648044, guid: 6c575476ee102e246ad5b651c468e448, type: 3}
+  HappyClown: {fileID: 8749997529730991100, guid: 19704620a6179534180a928e478386e0, type: 3}
 --- !u!1 &8206511180457695580
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,7 +220,7 @@ GameObject:
   - component: {fileID: 2786645339179295643}
   m_Layer: 0
   m_Name: Target Collider
-  m_TagString: Untagged
+  m_TagString: SadClown
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -298,7 +301,7 @@ GameObject:
   - component: {fileID: 3592946424276184979}
   m_Layer: 0
   m_Name: Clown Without Nose
-  m_TagString: Untagged
+  m_TagString: SadClown
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
