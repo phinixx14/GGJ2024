@@ -16,13 +16,15 @@ public class GameManager : MonoBehaviour
     PlayerManager player;
     LevelScroller levelScroller;
     Canvas TitleUI;
+    Canvas StoryUI;
+    Canvas InstructionsUI;
     Canvas PauseUI;
     Canvas GameOverUI;
     Canvas YouWinUI;
-    Canvas InstructionsUI;
 
     Button btnStart_Title;
     Button btnExit_Title;
+    Button btnStart_Story;
     Button btnStart_Instructions;
     Button btnUnpause_Pause;
     Button btnExit_Pause;
@@ -42,15 +44,22 @@ public class GameManager : MonoBehaviour
 
         List<Canvas> canvases = new List<Canvas>(FindObjectsOfType<Canvas>(true));
         TitleUI = canvases.Find(c => c.name == "Title Screen Canvas").GetComponent<Canvas>();
+        StoryUI = canvases.Find(c => c.name == "Story Canvas").GetComponent<Canvas>();
+        InstructionsUI = canvases.Find(c => c.name == "Instructions Canvas").GetComponent<Canvas>();
         PauseUI = canvases.Find(c => c.name == "Pause Screen Canvas").GetComponent<Canvas>();
         GameOverUI = canvases.Find(c => c.name == "Game Over Canvas").GetComponent<Canvas>();
         YouWinUI = canvases.Find(c => c.name == "You Win Canvas").GetComponent<Canvas>();
-        InstructionsUI = canvases.Find(c => c.name == "Instructions Canvas").GetComponent<Canvas>();
 
         List<Button> titleUIButtons = new List<Button>(TitleUI.gameObject.GetComponentsInChildren<Button>());
         btnStart_Title = titleUIButtons.Find(btn => btn.name == "Start Button").GetComponent<Button>();
         btnExit_Title = titleUIButtons.Find(btn => btn.name == "Exit Button").GetComponent<Button>();
-        
+
+        List<Button> storyUIButtons = new List<Button>(StoryUI.gameObject.GetComponentsInChildren<Button>());
+        btnStart_Story = storyUIButtons.Find(btn => btn.name == "Start Button").GetComponent<Button>();
+
+        List<Button> InstructionsUIButtons = new List<Button>(InstructionsUI.gameObject.GetComponentsInChildren<Button>());
+        btnStart_Instructions = InstructionsUIButtons.Find(btn => btn.name == "Start Button").GetComponent<Button>();
+
         List<Button> pauseUIButtons = new List<Button>(PauseUI.gameObject.GetComponentsInChildren<Button>());
         btnUnpause_Pause = pauseUIButtons.Find(btn => btn.name == "Unpause Button").GetComponent<Button>();
         btnExit_Pause = pauseUIButtons.Find(btn => btn.name == "Exit Button").GetComponent<Button>();
@@ -59,12 +68,12 @@ public class GameManager : MonoBehaviour
         btnRestart_GameOver = gameOverUIButtons.Find(btn => btn.name == "Restart Button").GetComponent<Button>();
         btnExit_GameOver = gameOverUIButtons.Find(btn => btn.name == "Exit Button").GetComponent<Button>();
 
-        List<Button> InstructionsUIButtons = new List<Button>(InstructionsUI.gameObject.GetComponentsInChildren<Button>());
-        btnStart_Instructions = InstructionsUIButtons.Find(btn => btn.name == "Start Button").GetComponent<Button>();
-
         TitleUI.gameObject.SetActive(true);
         btnStart_Title.onClick.AddListener(TitleStartClicked);
         btnExit_Title.onClick.AddListener(ExitGame);
+
+        StoryUI.gameObject.SetActive(false);
+        btnStart_Story.onClick.AddListener(StoryStartClicked);
 
         InstructionsUI.gameObject.SetActive(false);
         btnStart_Instructions.onClick.AddListener(StartGame);
@@ -104,6 +113,10 @@ public class GameManager : MonoBehaviour
 
     void TitleStartClicked() {
         TitleUI.gameObject.SetActive(false);
+        StoryUI.gameObject.SetActive(true);
+    }
+    void StoryStartClicked() {
+        StoryUI.gameObject.SetActive(false);
         InstructionsUI.gameObject.SetActive(true);
     }
     void StartGame() {

@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     void Update() {
         //        Vector2 inputVector = controls.RoadControls.Movement.ReadValue<Vector2>() * speed * Time.deltaTime;
         player.Translate(movement * Time.deltaTime);
-        player.position = new Vector3(Mathf.Clamp(player.position.x, -11, 11), Mathf.Clamp(player.position.y, -4, 4), 0);
+        player.position = new Vector3(Mathf.Clamp(player.position.x, -10f, 10f), Mathf.Clamp(player.position.y, -4, 4), 0);
     }
     private void OnDestroy() {
         controls.RoadControls.Move.performed -= this.HandleMovement;

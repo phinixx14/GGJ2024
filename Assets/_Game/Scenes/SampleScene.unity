@@ -312,6 +312,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 4928448647046395739, guid: 3488af4fefcf5c14f9eee3d998ea2b6f, type: 3}
+      propertyPath: m_Name
+      value: Start Button
+      objectReference: {fileID: 0}
     - target: {fileID: 5098817357744582472, guid: 3488af4fefcf5c14f9eee3d998ea2b6f, type: 3}
       propertyPath: m_Layer
       value: 5

@@ -9,6 +9,7 @@ public class Projectile : MonoBehaviour
     public float speed = 1;
     public Collider2D col;
     GameManager gm;
+    float creationTime;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +19,7 @@ public class Projectile : MonoBehaviour
         gm = GameManager.FindInstance();
         gm.OnPlayerDeath += DestroySelf;
         gm.OnReachedFinish += DestroySelf;
+        creationTime = Time.realtimeSinceStartup;
     }
     private void OnDestroy() {
         gm.OnPlayerDeath -= DestroySelf;
@@ -51,6 +53,10 @@ public class Projectile : MonoBehaviour
             if (hits > 0) {
                 DestroySelf(this);
             }
+        }
+
+        if (Time.realtimeSinceStartup - creationTime > 5) {
+            DestroySelf();
         }
     }
     void DestroySelf() {
