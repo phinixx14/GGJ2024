@@ -8,29 +8,40 @@ public class PlayerCollider : MonoBehaviour
     BoxCollider2D col;
     SpriteRenderer sprite;
     LevelScroller scroller;
+
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         player = GetComponentInParent<PlayerManager>();
         col = transform.parent.GetComponentInChildren<BoxCollider2D>();
         sprite = transform.parent.GetComponentInChildren<SpriteRenderer>();
-        
+
         if (!scroller) {
             scroller = FindObjectOfType<LevelScroller>();
         }
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.useTriggers = true;
+        //filter.SetLayerMask(LayerMask.NameToLayer("Nose Targets"));
         List<Collider2D> collisions = new();
-        col.OverlapCollider(new ContactFilter2D().NoFilter(), collisions);
+        col.OverlapCollider(filter, collisions);
+
         if (collisions.Count > 0) {
-            Debug.Log("collider overlap");
-            scroller.Stop();
-            sprite.color = new Color(.5f, .2f, .2f);
-            collisions.ForEach(c => c.gameObject.transform.parent.GetComponentInChildren<SpriteRenderer>().color = new Color(.5f, .2f, .2f));
-            player.OnPlayerDeath();
+            int hits = 0;
+            collisions.ForEach(col => {
+                if (!col.CompareTag("FriendlyProjectile")) {
+                    hits++;
+                    Debug.Log("collider overlap");
+                    col.gameObject.transform.parent.GetComponentInChildren<SpriteRenderer>().color = new Color(.5f, .2f, .2f);
+                }
+            });
+
+            if (hits > 0) {
+                sprite.color = new Color(.5f, .2f, .2f);
+                GameManager.FindInstance().TriggerDeath();
+            }
         }
     }
 

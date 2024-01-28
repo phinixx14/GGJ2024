@@ -5,22 +5,30 @@ using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
-    PlayerCollider collider;
+    public NoseLauncher launcher;
+
+    PlayerCollider col;
     PlayerController controller;
     SpriteRenderer sprite;
-    
+    GameManager gm;
     // Start is called before the first frame update
     void Start()
     {
-        collider = GetComponentInChildren<PlayerCollider>();
+        gm = GameManager.FindInstance();
+        gm.OnPlayerDeath += OnPlayerDeath;
+
+        col = GetComponentInChildren<PlayerCollider>();
         controller = GetComponentInChildren<PlayerController>();
         sprite = GetComponentInChildren<SpriteRenderer>();
-        
     }
-
-    public void OnPlayerDeath() {
+    private void OnDestroy() {
+        gm.OnPlayerDeath -= OnPlayerDeath;
+    }
+    public void OnPlayerDeath(object sender) {
         Debug.Log("player death");
-        collider.gameObject.SetActive(false);
+        if (col) {
+            col.gameObject.SetActive(false);
+        }
         controller.OnPlayerDeath();
     }
 }
